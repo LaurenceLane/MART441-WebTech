@@ -1,4 +1,4 @@
 # MART441-WebTech
 
 Base URL:
-https://github.com/LaurenceLane/MART441-WebTech
+https://laurencelane.github.io/MART441-WebTech/
