@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Lexend;
+    src: url(media/fonts/Lexend-Regular.ttf);}
+
+@font-face {
+    font-family: LibreBaskerville;
+    src: url(media/fonts/LibreBaskerville-Regular.ttf);
+    src: url(media/fonts/LibreBaskerville-Italic.ttf);
+    src: url(media/fonts/LibreBaskerville-Bold.ttf);}
