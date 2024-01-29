@@ -1,0 +1,48 @@
+.wrapper{
+    display: grid;
+    max-width: 1024px;
+    height: auto;
+    position: relative;
+    margin: auto;
+    grid-template-columns: repeat(14, [col-start] 1fr);
+    grid-gap: 20px;}
+
+ center {text-align:center;}
+
+ ::-webkit-scrollbar{
+    width: 15px;}
+  
+    ::-webkit-scrollbar-thumb {
+    background: #603e39;
+    border-radius: 6px;}
+  
+    ::-webkit-scrollbar-thumb:hover {
+    background: #2c1c1a;
+    border-radius: 6px; }
+  
+    ::-webkit-scrollbar-track {
+    background: transparent; }
+    
+ body {
+    background-color: rgb(202, 202, 202);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    overflow-x: hidden;
+   }
+
+
+    
+
+                   
+   @keyframes fade-in {
+    0% {opacity: 0;}
+    100% {opacity: 1;}}
+
+    @keyframes fade-out {
+     0% {opacity: 1;}
+     100% {opacity: 0;}} 
+
+    @keyframes slide {
+     from {margin-left: 40%;}
+     to {margin-left: 100%;}}
