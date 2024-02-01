@@ -1,0 +1,19 @@
+
+
+
+
+h1{
+    font-family: lexend;
+}
+
+#story{
+    font-family: 'Courier New', Courier, monospace;
+}
+button{
+    font-family: lexend;
+    font-weight: bold;
+
+}
+@font-face {
+    font-family: Lexend;
+    src: url(media/fonts/Lexend-Regular.ttf);}
