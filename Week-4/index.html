@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <title>Choose your own adventure</title>
+    <link rel="stylesheet" href="external.css">
+    <script src="main.js"></script>
+</head>
+
+    <body>
+    <div style="margin: auto; width: 50%;">
+    <img src="RoswellBlood.jpg" height="300px" style="display: block; margin-left: auto; margin-right: auto;">
+    <br>
+    <h1  style="display: flex; justify-content: center;">Rooftop Fumblings</h1>
+    <div id="story" style="text-align: center;">
+        Roswell stands on the roof of an old brick building, shuffling from foot to foot, staring out to the next rooftop, roughly 6 feet away. Logically he knows he can make the jump, but should he?
+    </div>
+    <br>
+    <div style="display: flex; justify-content: center;">
+        <input type="text" size="30" id="choice" value="Type 'Jump' or 'Don't'">
+        <button id="btnSubmit" onclick="getChoice1();">Enter</button>
+
+        <input type="text" size="30" id="choice2" value="Type 'Jump!' or 'Stop!'" style="display:none">
+        <button id="btnSubmit2" onclick="getChoice2();"  style="display:none">Click to continue</button>
+
+        <input type="text" size="30" id="choice3" value="Type 'That's enough' or 'Go further'"  style="display:none">
+        <button id="btnSubmit3" onclick="getChoice3();" style="display:none">Click to continue</button>
+        
+        <input type="text" size="30" id="choice4" value="Type 'Try to land on his feet' or 'Tuck and roll'" style="display:none">
+        <button id="btnSubmit4" onclick="getChoice4();"  style="display:none">Click to continue</button>
+
+        <input type="text" size="30" id="choice5" value="Type 'Quit' or 'Restart'"  style="display:none">
+        <button id="btnSubmit5" onclick="getChoice5();" style="display:none">Click to continue</button>
+        
+        <input type="text" size="30" id="choice6" value="Type 'Quit' or 'Restart'"  style="display:none">
+        <button id="btnSubmit6" onclick="getChoice6();" style="display:none">Click to continue</button>
+
+        <input type="text" size="30" id="choice7" value="Type 'Quit' or 'Restart'"  style="display:none">
+        <button id="btnSubmit7" onclick="getChoice7();" style="display:none">Click to continue</button>
+    </div>
+    <br>
+    <img src="Key.png" height="150px" id="key" style="display: block; margin-left: auto; margin-right: auto; visibility: hidden;">
+</div>
+</body>
+
+</html>
