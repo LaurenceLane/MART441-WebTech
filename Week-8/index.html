@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fading Images and Moving Shapes</title>
+<style>
+    /* Styles for shapes */
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+     }
+    .circle1 {
+        background-color: rgb(255, 255, 255);
+        width: 50px;
+        height: 50px;
+     }
+
+     .circle2 {
+        background-color: rgb(255, 255, 255);
+        width: 50px;
+        height: 50px;
+     }
+
+     .circle3 {
+        background-color: rgb(255, 255, 255);
+        width: 50px;
+        height: 50px;
+     }
+    /* Styles for text */
+    body {
+        background-color: black;
+        color: white;
+    }
+    #quote {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div id="quote"></div>
+
+<!-- Images -->
+<img class="fade-img" src="images/image1.gif">
+<img class="fade-img" src="images/image2.gif">
+<img class="fade-img" src="images/image3.gif">
+
+<!-- Shapes -->
+<div class="shape circle1" style="top: 100px; left: 100px;"></div>
+<div class="shape circle2" style="top: 200px; left: 200px;"></div>
+<div class="shape circle3" style="top: 300px; left: 300px;"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    var $fadeImgs = $('.fade-img');
+    var currentIndex = 0;
+    var quotes = ["It's not a mojo dojo casa house, it's a mojo dojo casa home.", "God gives his silliest battles to his funniest clowns.", "Aw beans."];
+    var currentQuoteIndex = 0;
+
+    // Function to fade images in and out
+    function fadeImages() {
+        $fadeImgs.eq(currentIndex).fadeOut(1000, function() {
+            currentIndex = (currentIndex + 1) % $fadeImgs.length;
+            $fadeImgs.eq(currentIndex).fadeIn(1000);
+        });
+    }
+
+    // Function to rotate through quotes
+    function rotateQuotes() {
+        $('#quote').fadeOut(1000, function() {
+            $('#quote').text(quotes[currentQuoteIndex]);
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            $('#quote').fadeIn(1000);
+        });
+    }
+
+    // Initial fade-in
+    $fadeImgs.hide();
+    $fadeImgs.eq(0).fadeIn(1000);
+
+    // Start fading images and rotating quotes
+    setInterval(fadeImages, 3000);
+    setInterval(rotateQuotes, 5000);
+
+    // Animation for shapes
+    $('.shape').each(function() {
+        var $shape = $(this);
+        var screenWidth = $(window).width();
+        var screenHeight = $(window).height();
+        var shapeWidth = $shape.width();
+        var shapeHeight = $shape.height();
+
+        setInterval(function() {
+            var newX = Math.random() * (screenWidth - shapeWidth);
+            var newY = Math.random() * (screenHeight - shapeHeight);
+            $shape.animate({left: newX, top: newY}, 3000);
+        }, 3000);
+    });
+});
+</script>
+
+</body>
+</html>
