@@ -33,7 +33,7 @@ $(document).ready(function(){
                               '<br>Spawn Time: ' + pokemon.spawn_time +
                               '<br>Weaknesses: ' + pokemon.weaknesses.join(', ') +
                               '<br>Previous Evolution: ' + (pokemon.prev_evolution ? pokemon.prev_evolution.map(evolution => evolution.name).join(', ') : 'None') +
-                              '<br>Next Evolution: ' + (pokemon.next_evolution ? pokemon.next_evolution.map(evolution => evolution.name).join(', ') : 'None') +
+                              '<br>Next Evolution: ' + (pokemon.next_evolution ? pokemon.next_evolution.map(evolution => evolution.name).join(', ') : 'None') + <br>
                               '</li>';
                 });
                 output += '</ul>';
