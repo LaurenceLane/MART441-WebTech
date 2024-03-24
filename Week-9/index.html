@@ -1,0 +1,59 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    // Function to fetch and display Pokémon data
+    function displayPokemonData() {
+        $.ajax({
+            url: 'data.json',
+            dataType: 'json',
+            success: function(data) {
+                console.log('Data:', data); 
+                
+                var output = '<ul>';
+                $.each(data.pokemon, function(index, pokemon) {
+                    output += '<li>ID: ' + pokemon.id +
+                              '<br>Number: ' + pokemon.num +
+                              '<br>Name: ' + pokemon.name +
+                              '<br>Type: ' + pokemon.type.join(', ') +
+                              '<br><img src="' + pokemon.img + '" alt="' + pokemon.name + '">' +
+                              '<br>Height: ' + pokemon.height +
+                              '<br>Weight: ' + pokemon.weight +
+                              '<br>Candy: ' + pokemon.candy +
+                              '<br>Candy Count: ' + pokemon.candy_count +
+                              '<br>Egg: ' + pokemon.egg +
+                              '<br>Spawn Chance: ' + pokemon.spawn_chance +
+                              '<br>Average Spawns: ' + pokemon.avg_spawns +
+                              '<br>Spawn Time: ' + pokemon.spawn_time +
+                              '<br>Weaknesses: ' + pokemon.weaknesses.join(', ') +
+                              '<br>Previous Evolution: ' + (pokemon.prev_evolution ? pokemon.prev_evolution.map(evolution => evolution.name).join(', ') : 'None') +
+                              '<br>Next Evolution: ' + (pokemon.next_evolution ? pokemon.next_evolution.map(evolution => evolution.name).join(', ') : 'None') +
+                              '</li>';
+                });
+                output += '</ul>';
+                $('#data-container').html(output);
+            }
+        });
+    }
+
+    // Click event handler for the button
+    $('#btnSubmit').click(function() {
+        displayPokemonData();
+    });
+});
+</script>
+
+</head>
+<body>
+
+<div id="data-container"></div>
+<button id="btnSubmit">Show Information</button>
+
+</body>
+</html>
