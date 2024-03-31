@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collision Game</title>
+<style>
+    canvas {
+        border: 2px solid black;
+    }
+</style>
+</head>
+<body>
+
+<canvas id="canvas" width="600" height="400"></canvas>
+<br>
+<audio id="backgroundMusic" src="background_music.mp3" controls="controls">
+</audio>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    let obj1, obj2;
+    let collided = false;
+    let backgroundOpacity = 0.1;
+
+    class GameObject {
+        constructor(color, size, x, y, dx, dy) {
+            this.color = color;
+            this.size = size;
+            this.x = x;
+            this.y = y;
+            this.dx = dx;
+            this.dy = dy;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        move() {
+            this.x += this.dx;
+            this.y += this.dy;
+
+            if (this.x - this.size <= 0 || this.x + this.size >= canvas.width) {
+                this.dx *= -1;
+            }
+            if (this.y - this.size <= 0 || this.y + this.size >= canvas.height) {
+                this.dy *= -1;
+            }
+        }
+
+        checkCollision(other) {
+            const distance = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+            return distance < this.size + other.size;
+        }
+    }
+
+    function playBackgroundMusic() {
+        backgroundMusic.play();
+    }
+
+    function init() {
+        obj1 = new GameObject('blue', 30, 50, 50, 0, 0); // Initially stationary
+        obj2 = new GameObject('red', 30, 300, 300, 2, 2); // Slower moving objects
+
+        playBackgroundMusic();
+        setInterval(update, 50);
+        
+        // Add event listeners for arrow key presses
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
+    }
+
+    // Variable to track arrow key states
+    const arrowKeys = {
+        up: false,
+        down: false,
+        left: false,
+        right: false
+    };
+
+    // Function to handle arrow key down events
+    function handleKeyDown(event) {
+        if (event.key === 'ArrowUp') {
+            arrowKeys.up = true;
+        } else if (event.key === 'ArrowDown') {
+            arrowKeys.down = true;
+        } else if (event.key === 'ArrowLeft') {
+            arrowKeys.left = true;
+        } else if (event.key === 'ArrowRight') {
+            arrowKeys.right = true;
+        }
+    }
+
+    // Function to handle arrow key up events
+    function handleKeyUp(event) {
+        if (event.key === 'ArrowUp') {
+            arrowKeys.up = false;
+        } else if (event.key === 'ArrowDown') {
+            arrowKeys.down = false;
+        } else if (event.key === 'ArrowLeft') {
+            arrowKeys.left = false;
+        } else if (event.key === 'ArrowRight') {
+            arrowKeys.right = false;
+        }
+    }
+
+    function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Update obj1 position based on arrow key states
+    if (arrowKeys.up && obj1.y - obj1.size > 0) {
+        obj1.y -= 5;
+    }
+    if (arrowKeys.down && obj1.y + obj1.size < canvas.height) {
+        obj1.y += 5;
+    }
+    if (arrowKeys.left && obj1.x - obj1.size > 0) {
+        obj1.x -= 5;
+    }
+    if (arrowKeys.right && obj1.x + obj1.size < canvas.width) {
+        obj1.x += 5;
+    }
+
+    obj1.move();
+    obj2.move();
+
+    obj1.draw();
+    obj2.draw();
+
+    if (obj1.checkCollision(obj2)) {
+        obj1.x = 50; // Reset position of obj1
+        obj1.y = 50;
+        obj2.x = 300; // Reset position of obj2
+        obj2.y = 300;
+        obj1.size += 5;
+        obj2.size += 5;
+        collided = true;
+        backgroundOpacity += 0.05; // Increase opacity after collision
+        
+        // Change background color upon collision
+        canvas.style.backgroundColor = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`;
+    } else {
+        collided = false;
+    }
+
+    // Adjust background color based on collision
+    if (collided) {
+        ctx.fillStyle = `rgba(0, 0, 0, ${backgroundOpacity})`; // Darker background
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
