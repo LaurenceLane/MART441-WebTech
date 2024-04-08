@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collectible Game</title>
+<style>
+  canvas {
+    border: 1px solid black;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  #scoreDisplay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+<div id="scoreDisplay">Score: <span id="scoreValue">0</span></div>
+
+<script>
+  // JavaScript code goes here
+  // JSON data with five objects
+  const jsonData = [
+    {
+      "id": 1,
+      "x": 100,
+      "y": 100,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "id": 2,
+      "x": 200,
+      "y": 200,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "id": 3,
+      "x": 300,
+      "y": 300,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "id": 4,
+      "x": 400,
+      "y": 400,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "id": 5,
+      "x": 500,
+      "y": 500,
+      "width": 50,
+      "height": 50
+    }
+  ];
+
+  // JSON data with three collectible objects
+  const collectibleData = [
+    {
+      "id": 1,
+      "x": 150,
+      "y": 150,
+      "width": 30,
+      "height": 30
+    },
+    {
+      "id": 2,
+      "x": 250,
+      "y": 250,
+      "width": 30,
+      "height": 30
+    },
+    {
+      "id": 3,
+      "x": 350,
+      "y": 350,
+      "width": 30,
+      "height": 30
+    }
+  ];
+
+  // Canvas setup
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Class for objects
+  class GameObject {
+    constructor(id, x, y, width, height) {
+      this.id = id;
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+    }
+  }
+
+  // Class for collectible objects
+  class Collectible {
+    constructor(id, x, y, width, height) {
+      this.id = id;
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.collected = false;
+    }
+  }
+
+  // Array to store objects
+  const objects = [];
+  const collectibles = [];
+
+  // Fill the array with objects created from JSON data
+  jsonData.forEach(obj => {
+    objects.push(new GameObject(obj.id, obj.x, obj.y, obj.width, obj.height));
+  });
+
+  // Fill the array with collectible objects created from JSON data
+  collectibleData.forEach(collectible => {
+    collectibles.push(new Collectible(collectible.id, collectible.x, collectible.y, collectible.width, collectible.height));
+  });
+
+  // Draw function
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw objects
+    ctx.fillStyle = 'blue';
+    objects.forEach(obj => {
+      ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+    });
+
+    // Draw collectibles
+    ctx.fillStyle = 'green';
+    collectibles.forEach(collectible => {
+      if (!collectible.collected) {
+        ctx.fillRect(collectible.x, collectible.y, collectible.width, collectible.height);
+      }
+    });
+
+    // Draw player
+    ctx.fillStyle = 'red';
+    ctx.fillRect(player.x, player.y, player.width, player.height);
+  }
+
+  // Player class
+  class Player {
+    constructor(x, y, width, height) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.prevX = x; // Previous X position
+      this.prevY = y; // Previous Y position
+    }
+
+    // Function to move player
+    move(direction) {
+      switch (direction) {
+        case 'up':
+          this.y -= 10;
+          break;
+        case 'down':
+          this.y += 10;
+          break;
+        case 'left':
+          this.x -= 10;
+          break;
+        case 'right':
+          this.x += 10;
+          break;
+      }
+    }
+
+    // Function to check collision with objects
+    checkCollision(objects) {
+      for (let obj of objects) {
+        if (
+          this.x < obj.x + obj.width &&
+          this.x + this.width > obj.x &&
+          this.y < obj.y + obj.height &&
+          this.y + this.height > obj.y
+        ) {
+          return true; // collision detected
+        }
+      }
+      return false; // no collision detected
+    }
+
+    // Function to check collision with collectibles
+    checkCollectiblesCollision(collectibles) {
+      for (let collectible of collectibles) {
+        if (
+          this.x < collectible.x + collectible.width &&
+          this.x + this.width > collectible.x &&
+          this.y < collectible.y + collectible.height &&
+          this.y + this.height > collectible.y &&
+          !collectible.collected
+        ) {
+          collectible.collected = true;
+          return collectible.id; // Return the id of the collected collectible
+        }
+      }
+      return null; // No collision with collectibles
+    }
+
+    // Function to update previous position
+    updatePreviousPosition() {
+      this.prevX = this.x;
+      this.prevY = this.y;
+    }
+
+    // Function to revert to previous position
+    revertToPreviousPosition() {
+      this.x = this.prevX;
+      this.y = this.prevY;
+    }
+  }
+
+  // Instantiate player object
+  const player = new Player(50, 50, 50, 50);
+
+  // Score tracking
+  let score = 0;
+
+  // Function to update score display
+  function updateScoreDisplay() {
+    const scoreDisplay = document.getElementById('scoreValue');
+    scoreDisplay.textContent = score;
+  }
+
+  // Event listener for arrow key presses
+  document.addEventListener('keydown', function(event) {
+    // Update player's previous position
+    player.updatePreviousPosition();
+
+    switch (event.key) {
+      case 'ArrowUp':
+        player.move('up');
+        break;
+      case 'ArrowDown':
+        player.move('down');
+        break;
+      case 'ArrowLeft':
+        player.move('left');
+        break;
+      case 'ArrowRight':
+        player.move('right');
+        break;
+    }
+
+    // Check for collision after moving player
+    if (player.checkCollision(objects)) {
+      // Handle collision with objects here
+      console.log('Collision with objects detected!');
+      // Reset player position to previous position to avoid collision
+      player.revertToPreviousPosition();
+    }
+
+    // Check for collision with collectibles
+    const collectedId = player.checkCollectiblesCollision(collectibles);
+    if (collectedId !== null) {
+      // Increase score and remove the collected collectible from the array
+      score++;
+      console.log('Collected collectible with id:', collectedId);
+      console.log('Score:', score);
+      updateScoreDisplay();
+      collectibles.splice(collectibles.findIndex(collectible => collectible.id === collectedId), 1);
+    }
+
+    // Redraw canvas
+    draw();
+  });
+
+  // Initial draw
+  draw();
+</script>
+
+</body>
+</html>
